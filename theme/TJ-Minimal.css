@@ -1,283 +1,289 @@
 /* @theme TJ-Minimal */
+/* @size 16:9 1280px 720px */
+/* @size 4:3 960px 720px */
 
 /*
   ============================================
     TJ-Minimal Marp Theme
-    ============================================       
+  ============================================
 */
 
 @import "default";
 
-/* 1. Colors */
-:root {
-  --color-accent: #265AA6; /* 极简同济蓝 */
-  --color-text: #2b2c2e;
-  --color-bg: #ffffff;
-  --color-muted: #737373;
-  --color-border: #eaeaea;
-  --color-code-bg: #f6f8fa;
-}
+/* Tongji-Blue : 51, 104, 144 */
 
-/* 4. Fonts */
+/* ── 1. Design Tokens ─────────────────────── */
 :root {
+  --color-accent:   #336890;
+  --color-text:     #2b2c2e;
+  --color-bg:       #ffffff;
+  --color-muted:    #737373;
+  --color-border:   #eaeaea;
+  --color-code-bg:  #f6f8fa;
+
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", sans-serif;
 
-  /* 方案 A: 现代无衬线 (默认) - 适合屏幕演示，清晰易读 */
-  /*font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;*/
-  
-  /* 方案 B: 优雅衬线 - 适合学术汇报，极具呼吸感 */
-  /*font-family: "Georgia", "Times New Roman", "Noto Serif CJK SC", "Source Han Serif SC", STSong, serif;*/
-  
-  /* 方案 C: 极客等宽 - 适合浓厚技术氛围 */
+  /* 方案 A: 现代无衬线（默认）- 适合屏幕演示 */
+  /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif; */
+
+  /* 方案 B: 优雅衬线 - 适合学术汇报 */
+  /* font-family: "Georgia", "Times New Roman", "Noto Serif CJK SC", "Source Han Serif SC", STSong, serif; */
+
+  /* 方案 C: 极客等宽 */
   /* font-family: "Fira Code", "Consolas", "Monaco", "Courier New", monospace; */
 }
 
-
-/* 2. Page Basics */
+/* ── 2. Base Slide ────────────────────────── */
 section {
-  font-size: 20px; /* 默认通常为 30px+，调小以容纳更多字 */
-  padding: 90px 70px 50px 70px;
+  width: 1280px;
+  height: 720px;
+  padding: 70px;
+  font-size: 20px;
+  line-height: 1.6;
   color: var(--color-text);
   background-color: var(--color-bg);
-  line-height: 1.6;
-
-  /* 统一添加同济Logo到每一页左上角：相同位置、大小 */
   background-image: url('https://iam.tongji.edu.cn/idp/themes/default/images/logo.png?a=1');
   background-size: 180px auto;
   background-repeat: no-repeat;
   background-position: left 40px top 30px;
 }
 
-/* Header设为右上角，右对齐 */
-header {
-  position: absolute;
-  top: 30px;
-  right: 40px;
-  text-align: right;
-  color: var(--color-muted);
-  font-size: 0.85em;
-  font-weight: 300;
-}
-
-/* Footer 和页码设为同一底边高度，保证横轴对齐 */
+/* ── 3. Header / Footer ───────────────────── */
+header,
 footer,
 section::after {
   position: absolute;
-  bottom: 30px;
-  color: var(--color-muted);
   font-size: 0.85em;
   font-weight: 300;
-}
-footer {
-  left: 70px;
-}
-section::after {
-  right: 70px;
+  color: var(--color-muted);
 }
 
-h1 { 
-  font-size: 1.8em; 
-  margin-bottom: 0.5em; 
-  color: var(--color-text); 
-  border-bottom: 1px solid var(--color-accent); 
-  padding-bottom: 10px; 
+header {
+  top: 30px;
+  right: 40px;
+  text-align: right;
+}
+
+footer    { bottom: 20px; left:  40px; }
+section::after { bottom: 20px; right: 40px; }
+
+/* ── 4. Typography ────────────────────────── */
+h1 {
+  font-size: 1.8em;
+  margin-top: 0.6em;
+  margin-bottom: 0.5em;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-accent);
+  padding-bottom: 10px;
 }
 h1 strong { color: var(--color-accent); }
-h2 { font-size: 1.4em; color: var(--color-muted); font-weight: 400; }
-h3 { font-size: 1.2em; }
+
+h2 { font-size: 1.4em; color: var(--color-muted); font-weight: 400; margin-top: 0.3em; }
+h3 { font-size: 1.2em; margin-top: 0.3em; }
+h4, h5, h6 { font-size: 1.1em; margin-top: 0.3em; }
 p, li { margin-bottom: 0.4em; }
 
-/* 3. Special Slides */
+/* ── 5. Decorative Rule (shared accent bar) ─ */
+/*
+  用法：在 h1::after 上统一注入横线装饰，
+  各特殊页通过覆写 margin/width 来定制位置。
+*/
+accent-bar {
+  content: "";
+  display: block;
+  height: 4px;
+  background-color: var(--color-accent);
+  border-radius: 2px;
+}
 
-/* 封面设计 (加入 class: title 激活) */
-section.title {
-  text-align: center;
+/* ── 6. Special Slides ────────────────────── */
+
+/* 封面／尾页共用居中 flex 布局 */
+section.title,
+section.ending {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0 10%;
+  text-align: center;
 }
+
+/* 封面 */
+section.title { padding: 0 10%; }
+
 section.title h1 {
   border-bottom: none;
   font-size: 3.8em;
   margin-bottom: 5px;
-  color: var(--color-text);
   font-weight: 600;
   letter-spacing: 2px;
 }
-/* 封面横线装饰 */
 section.title h1::after {
   content: "";
   display: block;
   width: 80px;
   height: 4px;
   background-color: var(--color-accent);
-  margin: 25px auto 15px auto;
   border-radius: 2px;
+  margin: 25px auto 15px;
 }
 section.title h2 {
   font-size: 1.6em;
-  color: var(--color-muted);
   font-weight: 300;
   margin-top: 0;
 }
 
-/* 尾页设计 (加入 class: ending 激活) */
-section.ending {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--color-bg);
-  color: var(--color-text);
-}
+/* 尾页 */
 section.ending h1 {
   border-bottom: none;
-  color: var(--color-text);
-  font-weight: 600;
   font-size: 4.2em;
+  font-weight: 600;
+  letter-spacing: 1px;
   margin-bottom: 0;
   padding-bottom: 0;
-  letter-spacing: 1px;
 }
-/* 尾页横线装饰 */
 section.ending h1::after {
   content: "";
   display: block;
   width: 80px;
   height: 4px;
   background-color: var(--color-accent);
-  margin: 20px auto 15px auto;
   border-radius: 2px;
+  margin: 20px auto 15px;
 }
-section.ending h2, section.ending p {
+section.ending h2,
+section.ending p {
   font-size: 1.8em;
-  color: var(--color-muted);
   font-weight: 300;
+  color: var(--color-muted);
   margin-top: 0;
 }
 
-/* 间页/章节过渡设计 (加入 class: chapter 激活) */
+/* 章节过渡页 */
 section.chapter {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  padding: 0 12%; 
+  padding: 0 12%;
 }
 section.chapter h1 {
   border-bottom: none;
   font-size: 3.2em;
-  color: var(--color-text);
   font-weight: 600;
+  letter-spacing: 1px;
   margin-bottom: 5px;
   padding-bottom: 0;
-  letter-spacing: 1px;
 }
-/* 章节页横线装饰 (居左侧靠齐) */
 section.chapter h1::after {
   content: "";
   display: block;
   width: 60px;
   height: 4px;
   background-color: var(--color-accent);
-  margin: 25px 0 15px 0;
   border-radius: 2px;
+  margin: 25px 0 15px;
 }
 section.chapter h2 {
   font-size: 1.6em;
-  color: var(--color-muted);
   font-weight: 300;
   margin-top: 0;
 }
 
-/* 5. Layout Engine */
-
-/* 通用图片自适应 (防止溢出页面) */
+/* ── 7. Images ────────────────────────────── */
 img {
   max-width: 100%;
   height: auto;
   display: block;
   margin: 0 auto;
-  /* 增加边框和画框效果，符合极简主题 */
+  object-fit: cover;
   border-radius: 6px;
   border: 1px solid var(--color-border);
   padding: 6px;
   background-color: var(--color-bg);
-  /* 加上这句，以后强制宽高的图片将自动裁切，不再拉伸畸变 */
-  object-fit: cover; 
 }
 
-/* 预设的两分版式 (.two-cols) */
-section.two-cols {
-  display: grid;
-  column-gap: 1.5rem;
-  row-gap: 0;
-  grid-template-columns: 50% 50%;
-  grid-template-rows: auto 1fr;
-  grid-template-areas:
-      "slideheading slideheading"
-      "leftpanel    rightpanel";
-}
+/* ── 8. Layout Engine ─────────────────────── */
 
-section.two-cols h1, section.two-cols h2, section.two-cols h3 {
-  grid-area: slideheading;
-  align-self: start;
-  margin-top: 15px;
-}
-section.two-cols .ldiv { grid-area: leftpanel; }
-section.two-cols .rdiv { grid-area: rightpanel; }
-section.two-cols .limg {
-  grid-area: leftpanel; display: flex; align-items: center; justify-content: center; 
-}
-section.two-cols .rimg {
-  grid-area: rightpanel; display: flex; align-items: center; justify-content: center;
-}
-
-/* 左右 4:6 排版 (.two-cols-46) */
+/*
+  两分版式基础（.two-cols / .two-cols-46 共用结构，
+  仅 grid-template-columns 不同）
+*/
+section.two-cols,
 section.two-cols-46 {
   display: grid;
-  column-gap: 1rem;
   row-gap: 0;
-  grid-template-columns: 40% 60%;
+  column-gap: 1.5rem;
+  padding-left: 70px;
+  padding-right: 70px;
   grid-template-rows: auto 1fr;
   grid-template-areas:
-      "slideheading slideheading"
-      "leftpanel    rightpanel";
+    "slideheading slideheading"
+    "leftpanel    rightpanel";
 }
-section.two-cols-46 h1, section.two-cols-46 h2, section.two-cols-46 h3 { grid-area: slideheading; align-self: start; margin-top: 15px; }
-section.two-cols-46 .ldiv { grid-area: leftpanel; }
-section.two-cols-46 .rdiv { grid-area: rightpanel; }
-section.two-cols-46 .limg { grid-area: leftpanel; display: flex; align-items: center; justify-content: center; }
-section.two-cols-46 .rimg { grid-area: rightpanel; display: flex; align-items: center; justify-content: center; }
 
-/* 目录版式 (.index) */
-section.index {
-  padding: 90px 80px 50px 80px; /* 顶部加宽避免遮挡校徽 */
+section.two-cols    { grid-template-columns: 1fr 1fr; }
+section.two-cols-46 { grid-template-columns: 2fr 3fr; column-gap: 1rem; }
+
+/* 两种版式共用的子区域规则 */
+section.two-cols h1,
+section.two-cols-46 h1 {
+  grid-area: slideheading;
+  align-self: start;
+  margin-top: 25px;
 }
+section.two-cols h2,    section.two-cols h3,
+section.two-cols-46 h2, section.two-cols-46 h3 {
+  grid-area: slideheading;
+  align-self: start;
+  margin-top: 10px;
+}
+
+section.two-cols .ldiv,
+section.two-cols-46 .ldiv { grid-area: leftpanel; }
+
+section.two-cols .rdiv,
+section.two-cols-46 .rdiv { grid-area: rightpanel; }
+
+section.two-cols .limg,
+section.two-cols-46 .limg {
+  grid-area: leftpanel;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+section.two-cols .rimg,
+section.two-cols-46 .rimg {
+  grid-area: rightpanel;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 目录版式 */
+section.index { padding: 80px; }
+
 section.index h1 {
   border-bottom: 2px solid var(--color-text);
   margin-bottom: 25px;
   font-size: 1.8em;
 }
-section.index ol, section.index ul {
+section.index ol,
+section.index ul {
   list-style: none;
   counter-reset: index-counter;
   padding: 0;
   margin: 0;
-  /* 采用绝对三栏 Grid 布局，强制按行铺开，避免瀑布流乱跳排列 */
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   column-gap: 40px;
   grid-auto-rows: min-content;
 }
-section.index ol li, section.index ul li {
+section.index li {
   font-size: 1.15em;
-  border-bottom: 1px dashed var(--color-border);
   padding: 8px 0;
   margin-bottom: 0;
+  border-bottom: 1px dashed var(--color-border);
   display: flex;
   align-items: baseline;
   break-inside: avoid;
@@ -298,10 +304,9 @@ section.index ul li::before {
   margin-right: 15px;
 }
 
-/* 6. Tables & Elements */
+/* ── 9. Tables ────────────────────────────── */
 table {
-  margin-left: auto;
-  margin-right: auto;
+  margin: 10px auto;
   width: max-content;
   max-width: 100%;
   border-collapse: collapse;
@@ -318,38 +323,58 @@ th, td {
   background-color: transparent !important;
 }
 
-/* 表头：顶部与底部粗强调线 (加强标签栏与数据栏的分割) */
+th { font-weight: 600; }
+
 thead th {
   border-top: 2px solid var(--color-text);
   border-bottom: 2px solid var(--color-text);
 }
-th {
-  font-weight: 600;
-  color: var(--color-text);
-}
 
-/* 表格主体及底部线条 */
-table tbody td {
-  border-bottom: 1px solid var(--color-border);
-}
-table tbody tr:last-child td {
-  border-bottom: 2px solid var(--color-text);
-}
+tbody td            { border-bottom: 1px solid var(--color-border); }
+tbody tr:last-child td { border-bottom: 2px solid var(--color-text); }
 
-/* 附加极简修饰：引用块与代码块 */
+/* ── 10. Misc Elements ────────────────────── */
 blockquote {
+  margin: 10px 0;
   border-left: 3px solid var(--color-accent);
-  padding-left: 1.2em;
+  border-radius: 0 6px 6px 0;
+  padding: 15px 20px;
   color: var(--color-muted);
   font-style: italic;
-  background: rgba(0,0,0,0.02);
-  padding: 15px 20px;
-  /*margin: 1.5em 0;*/
-  border-radius: 0 6px 6px 0;
+  background: rgba(0, 0, 0, 0.02);
 }
+
+/* 行内代码 */
 code {
   color: var(--color-accent);
   background: var(--color-code-bg);
   padding: 2px 6px;
   border-radius: 4px;
+  font-size: 0.88em;
+}
+
+/* 代码块 */
+pre {
+  margin: 10px auto;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-code-bg);
+  overflow: hidden;
+}
+
+pre code {
+  display: block;
+  color: var(--color-text);
+  background: transparent;
+  font-size: 0.9em;
+  line-height: 1.5;
+  border-radius: 0;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+/* 块级公式（MathJax / KaTeX） */
+mjx-container[display="true"],
+.katex-display {
+  margin: 10px auto;
 }

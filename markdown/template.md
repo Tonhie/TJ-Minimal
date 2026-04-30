@@ -1,6 +1,7 @@
 ---
 marp: true
 theme: TJ-Minimal
+size: 16:9
 paginate: true
 math: mathjax
 header: 'TONGJI UNIVERSITY | 同济大学'
