@@ -322,6 +322,51 @@ thead th {
 tbody td            { border-bottom: 1px solid var(--color-border); }
 tbody tr:last-child td { border-bottom: 2px solid var(--color-text); }
 
+
+/* 目录版式 */
+section.index { padding: 80px; }
+
+section.index h1 {
+  border-bottom: 2px solid var(--color-text);
+  margin-bottom: 25px;
+  font-size: 1.8em;
+}
+section.index ol,
+section.index ul {
+  list-style: none;
+  counter-reset: index-counter;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 40px;
+  grid-auto-rows: min-content;
+}
+section.index li {
+  font-size: 1.15em;
+  padding: 8px 0;
+  margin-bottom: 0;
+  border-bottom: 1px dashed var(--color-border);
+  display: flex;
+  align-items: baseline;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+section.index ol li::before {
+  counter-increment: index-counter;
+  content: counter(index-counter, decimal-leading-zero) ".";
+  color: var(--color-accent);
+  font-weight: 600;
+  font-size: 1.1em;
+  margin-right: 15px;
+}
+section.index ul li::before {
+  content: "—";
+  color: var(--color-accent);
+  font-weight: bold;
+  margin-right: 15px;
+}
+
 /* ── 10. Misc Elements ────────────────────── */
 blockquote {
   margin: 10px 0;
