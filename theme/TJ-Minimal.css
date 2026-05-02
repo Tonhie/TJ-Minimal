@@ -202,43 +202,76 @@ img {
   padding: 6px;
   background-color: var(--color-bg);
 }
-
 /* ── 8. Layout Engine ─────────────────────── */
 
 /*
-  两分版式基础（.two-cols / .two-cols-46 共用结构，
-  仅 grid-template-columns 不同）
+  ┌─────────────────────────────────────────────────┐
+  │  设计思路：                                       │
+  │  用显式的 padding-top 撑出标题区，                │
+  │  彻底脱离 "auto 行高" 的字符物理差异影响。        │
+  │                                                   │
+  │  可调参数（统一改这两个变量即可）：                │
+  │  --slide-logo-clearance : logo 底部到标题顶部的间距 │
+  │  --slide-header-height  : 标题区占据的总高度       │
+  └─────────────────────────────────────────────────┘
 */
+
 section.two-cols,
 section.two-cols-46 {
+  /* ── 可调参数 ── */
+  --slide-logo-clearance: 25px;   /* logo 区 + 留白 → 标题起始位置 */
+  --slide-header-height:  75px;  /* 标题区固定高度（含 h1 + h2 行）*/
+
   display: grid;
-  row-gap: 0;
   column-gap: 1.5rem;
+  row-gap: 0;
   padding-left: 70px;
   padding-right: 70px;
-  grid-template-rows: auto 1fr;
+
+  /* 三行：顶部留白 | 固定高度的标题区 | 剩余内容区 */
+  grid-template-rows:
+    var(--slide-logo-clearance)
+    var(--slide-header-height)
+    1fr;
+
   grid-template-areas:
+    "logospace  logospace"
     "slideheading slideheading"
-    "leftpanel    rightpanel";
+    "leftpanel  rightpanel";
 }
 
 section.two-cols    { grid-template-columns: 1fr 1fr; }
 section.two-cols-46 { grid-template-columns: 2fr 3fr; column-gap: 1rem; }
 
-/* 两种版式共用的子区域规则 */
+/* 标题区：强制行高，消除中英文字符高度差异 */
 section.two-cols h1,
 section.two-cols-46 h1 {
   grid-area: slideheading;
   align-self: start;
-  margin-top: 25px;
+  margin-top: 0;
+  /* 强制行高，使中英文在视觉上等高 */
+  line-height: 1.2;
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--color-accent);
+  padding-bottom: 10px;
 }
-section.two-cols h2,    section.two-cols h3,
-section.two-cols-46 h2, section.two-cols-46 h3 {
-  grid-area: slideheading;
-  align-self: start;
-  margin-top: 10px;
+section.two-cols h1 strong,
+section.two-cols-46 h1 strong {
+  color: var(--color-accent);
 }
 
+section.two-cols h2,
+section.two-cols h3,
+section.two-cols-46 h2,
+section.two-cols-46 h3 {
+  grid-area: slideheading;
+  align-self: end;   /* 贴住标题区底部，紧挨 h1 下方 */
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 1.2;
+}
+
+/* 内容区 */
 section.two-cols .ldiv,
 section.two-cols-46 .ldiv { grid-area: leftpanel; }
 
@@ -258,50 +291,6 @@ section.two-cols-46 .rimg {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-/* 目录版式 */
-section.index { padding: 80px; }
-
-section.index h1 {
-  border-bottom: 2px solid var(--color-text);
-  margin-bottom: 25px;
-  font-size: 1.8em;
-}
-section.index ol,
-section.index ul {
-  list-style: none;
-  counter-reset: index-counter;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  column-gap: 40px;
-  grid-auto-rows: min-content;
-}
-section.index li {
-  font-size: 1.15em;
-  padding: 8px 0;
-  margin-bottom: 0;
-  border-bottom: 1px dashed var(--color-border);
-  display: flex;
-  align-items: baseline;
-  break-inside: avoid;
-  page-break-inside: avoid;
-}
-section.index ol li::before {
-  counter-increment: index-counter;
-  content: counter(index-counter, decimal-leading-zero) ".";
-  color: var(--color-accent);
-  font-weight: 600;
-  font-size: 1.1em;
-  margin-right: 15px;
-}
-section.index ul li::before {
-  content: "—";
-  color: var(--color-accent);
-  font-weight: bold;
-  margin-right: 15px;
 }
 
 /* ── 9. Tables ────────────────────────────── */
